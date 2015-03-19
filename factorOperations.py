@@ -107,7 +107,6 @@ def joinFactors(factors):
 
 
     for factor in factors:
-        print factor
         for uncon in factor.unconditionedVariables():
             if uncon not in totalUnconditionedVars:
                 totalUnconditionedVars.add(uncon)
@@ -257,14 +256,13 @@ def normalize(factor):
     for variable, domain in originalDomains.items():
         if len(domain) == 1:
             if variable not in cond and variable in uncond:
-                cond.append(variable)
+                cond.add(variable)
             if variable in uncond:
                 uncond.remove(variable)
     new_factor = Factor(uncond, cond, factor.variableDomainsDict())
     possibles = new_factor.getAllPossibleAssignmentDicts()
     total_probability = 0
     for i in possibles:
-        print(str(i))
         probability = factor.getProbability(i)
         total_probability += probability
     for i in possibles:
