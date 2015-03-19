@@ -123,12 +123,10 @@ def joinFactors(factors):
     for ass in newFactor.getAllPossibleAssignmentDicts():
         newFactor.setProbability(ass, float(1.0))
 
-    print newFactor
-
     for factor in factors:
         asses = newFactor.getAllPossibleAssignmentDicts()
         for ass in asses:
-            for facAss in factor.getAllPossibleAssignmentDicts()
+            for facAss in factor.getAllPossibleAssignmentDicts():
                 pro = factor.getProbability(facAss)
                 works = True
                 for var in facAss.keys():
@@ -138,8 +136,6 @@ def joinFactors(factors):
                 if works:
                     newFactor.setProbability(ass, newFactor.getProbability(ass) * pro)
                     break
-
-    print newFactor
 
     return newFactor
 
