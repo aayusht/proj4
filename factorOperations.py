@@ -117,7 +117,7 @@ def joinFactors(factors):
                 totalConditionedVars.add(con)
                 varsToDomain[con] = factor.variableDomainsDict()[con]
 
-    newFactor = Factor(totalUnconditionedVars, totalConditionedVars, varsToDomain)
+    newFactor = Factor(list(totalUnconditionedVars), list(totalConditionedVars), varsToDomain)
 
     for ass in newFactor.getAllPossibleAssignmentDicts():
         newFactor.setProbability(ass, float(1.0))
@@ -256,7 +256,7 @@ def normalize(factor):
     for variable, domain in originalDomains.items():
         if len(domain) == 1:
             if variable not in cond and variable in uncond:
-                cond.add(variable)
+                cond.append(variable)
             if variable in uncond:
                 uncond.remove(variable)
     new_factor = Factor(uncond, cond, factor.variableDomainsDict())
