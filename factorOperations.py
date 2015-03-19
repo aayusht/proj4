@@ -128,16 +128,20 @@ def joinFactors(factors):
     for factor in factors:
         asses = newFactor.getAllPossibleAssignmentDicts()
         for ass in asses:
-            pro = 1.0
             for facAss in factor.getAllPossibleAssignmentDicts()
                 pro = factor.getProbability(facAss)
+                works = True
                 for var in facAss.keys():
                     if facAss[var] != ass[var]:
+                        works = False
+                        break
+                if works:
+                    newFactor.setProbability(ass, newFactor.getProbability(ass) * pro)
+                    break
 
+    print newFactor
 
-
-
-    return util.raiseNotDefined()
+    return newFactor
 
 
 def eliminateWithCallTracking(callTrackingList=None):
