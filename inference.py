@@ -17,6 +17,7 @@ import util
 from bayesNet import Factor
 from factorOperations import joinFactorsByVariableWithCallTracking, joinFactors
 from factorOperations import eliminateWithCallTracking, normalize
+from random import choice, seed
 
 def inferenceByEnumeration(bayesNet, queryVariables, evidenceDict):
     """
@@ -269,10 +270,24 @@ def inferenceByLikelihoodWeightingSamplingRandomSource(randomSource=None):
         BayesNet.linearizeVariables
         """
 
-        sampleFromFactor = sampleFromFactorRandomSource(randomSource)
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        sampleFromFactor = sampleFromFactorRandomSource(randomSource)
+        new_f = Factor(queryVariables, evidenceDict.keys(), bayesNet.getReducedVariableDomains(evidenceDict))
+
+        for i in range(numSamples):
+            w = 1
+            cur = dict()
+            for variable in bayesNet.linearizeVariables():
+                if variable in evidenceDict:
+                    cur[variable] = evidenceDict.get(variable)
+                    w *= bayesNet.getCPT(variable).getProbability(cur)
+                else:
+                    cur.update(sampleFromFactor(bayesNet.getCPT(variable), cur))
+            new_f.setProbability(cur, w + new_f.getProbability(cur))
+        new_f = normalize(new_f)
+        return new_f
+
+
 
     return inferenceByLikelihoodWeightingSampling
 
